@@ -1,4 +1,3 @@
-````markdown
 # 🛍️ Express.js Products API
 
 A simple RESTful API built using **Express.js** that demonstrates middleware, authentication, validation, error handling, and advanced features such as filtering, pagination, and search.
@@ -293,18 +292,4 @@ x-api-key: my-secret-key
 
 This project is licensed under the MIT License.
 
-````
-
----
-
-## ⚙️ **2. `.env.example`**
-
-```bash
-# Example environment variables for Express.js Product API
-
-# Port number for your server
-PORT=5000
-
-# Secret API key for authentication
-API_KEY=my-secret-key
 ````
