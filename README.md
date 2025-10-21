@@ -1,62 +1,310 @@
-# Express.js RESTful API Assignment
+````markdown
+# 🛍️ Express.js Products API
 
-This assignment focuses on building a RESTful API using Express.js, implementing proper routing, middleware, and error handling.
+A simple RESTful API built using **Express.js** that demonstrates middleware, authentication, validation, error handling, and advanced features such as filtering, pagination, and search.
 
-## Assignment Overview
+---
 
-You will:
-1. Set up an Express.js server
-2. Create RESTful API routes for a product resource
-3. Implement custom middleware for logging, authentication, and validation
-4. Add comprehensive error handling
-5. Develop advanced features like filtering, pagination, and search
+## 🚀 Getting Started
 
-## Getting Started
+### **1. Clone the repository**
+```bash
+git clone https://github.com/PLP-MERN-Stack-Development/express-js-server-side-framework-olanak
+cd express-js-server-side-framework-olanak
+````
 
-1. Accept the GitHub Classroom assignment invitation
-2. Clone your personal repository that was created by GitHub Classroom
-3. Install dependencies:
-   ```
-   npm install
-   ```
-4. Run the server:
-   ```
-   npm start
-   ```
+### **2. Install dependencies**
 
-## Files Included
+```bash
+npm install
+```
 
-- `Week2-Assignment.md`: Detailed assignment instructions
-- `server.js`: Starter Express.js server file
-- `.env.example`: Example environment variables file
+### **3. Setup environment variables**
 
-## Requirements
+Create a `.env` file in the root directory based on `.env.example`.
 
-- Node.js (v18 or higher)
-- npm or yarn
-- Postman, Insomnia, or curl for API testing
+Example:
 
-## API Endpoints
+```
+PORT=5000
+API_KEY=my-secret-key
+```
 
-The API will have the following endpoints:
+### **4. Run the server**
 
-- `GET /api/products`: Get all products
-- `GET /api/products/:id`: Get a specific product
-- `POST /api/products`: Create a new product
-- `PUT /api/products/:id`: Update a product
-- `DELETE /api/products/:id`: Delete a product
+```bash
+npm run dev
+```
 
-## Submission
+By default, the server runs on:
+👉 **[http://localhost:5000](http://localhost:5000)**
 
-Your work will be automatically submitted when you push to your GitHub Classroom repository. Make sure to:
+---
 
-1. Complete all the required API endpoints
-2. Implement the middleware and error handling
-3. Document your API in the README.md
-4. Include examples of requests and responses
+## ⚙️ Project Structure
 
-## Resources
+```
+src/
+ ├── Controllers/
+ │    └── productController.js
+ ├── Routes/
+ │    └── productsRoute.js
+ ├── middleware/
+ │    ├── auth.js
+ │    ├── logger.js
+ │    ├── validateProduct.js
+ │    ├── errorMiddleware.js
+ │    └── catchAsync.js
+ ├── utils/
+ │    └── error.js
+ ├── db/
+ │    └── db.js
+ ├── server.js
+.env
+.env.example
+README.md
+```
 
-- [Express.js Documentation](https://expressjs.com/)
-- [RESTful API Design Best Practices](https://restfulapi.net/)
-- [HTTP Status Codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) 
+---
+
+## 🧩 API Documentation
+
+### **Base URL**
+
+```
+http://localhost:5000/api/products
+```
+
+---
+
+### **1️⃣ Get All Products**
+
+**GET** `/api/products`
+
+**Query Parameters:**
+
+| Parameter | Type   | Description                 |
+| --------- | ------ | --------------------------- |
+| category  | string | Filter by category          |
+| page      | number | Pagination - page number    |
+| limit     | number | Pagination - items per page |
+
+**Response Example:**
+
+```json
+{
+  "total": 8,
+  "page": 1,
+  "totalPages": 2,
+  "data": [
+    {
+      "id": "1",
+      "name": "Laptop",
+      "description": "High-performance laptop with 16GB RAM",
+      "price": 1200,
+      "category": "electronics",
+      "inStock": true
+    }
+  ]
+}
+```
+
+---
+
+### **2️⃣ Get Product by ID**
+
+**GET** `/api/products/:id`
+
+**Response Example:**
+
+```json
+{
+  "id": "1",
+  "name": "Laptop",
+  "description": "High-performance laptop with 16GB RAM",
+  "price": 1200,
+  "category": "electronics",
+  "inStock": true
+}
+```
+
+---
+
+### **3️⃣ Create Product**
+
+**POST** `/api/products`
+
+🔒 **Protected Route** — requires an API key in headers.
+
+**Header:**
+
+```
+x-api-key: my-secret-key
+```
+
+**Request Body:**
+
+```json
+{
+  "name": "Smartphone",
+  "description": "Android phone with 8GB RAM",
+  "price": 500,
+  "category": "electronics",
+  "inStock": true
+}
+```
+
+**Response Example:**
+
+```json
+{
+  "message": "Product added successfully",
+  "product": {
+    "id": "b3c9e5a2-1c6d-48a0-befa-5f7a541b1234",
+    "name": "Smartphone",
+    "description": "Android phone with 8GB RAM",
+    "price": 500,
+    "category": "electronics",
+    "inStock": true
+  }
+}
+```
+
+---
+
+### **4️⃣ Update Product**
+
+**PUT** `/api/products/:id`
+
+**Header:**
+
+```
+x-api-key: my-secret-key
+```
+
+**Request Example:**
+
+```json
+{
+  "price": 550,
+  "inStock": false
+}
+```
+
+**Response Example:**
+
+```json
+{
+  "message": "Product updated successfully",
+  "product": {
+    "id": "b3c9e5a2-1c6d-48a0-befa-5f7a541b1234",
+    "name": "Smartphone",
+    "price": 550,
+    "inStock": false
+  }
+}
+```
+
+---
+
+### **5️⃣ Delete Product**
+
+**DELETE** `/api/products/:id`
+
+**Header:**
+
+```
+x-api-key: my-secret-key
+```
+
+**Response Example:**
+
+```json
+{
+  "message": "Product deleted successfully"
+}
+```
+
+---
+
+### **6️⃣ Search Products**
+
+**GET** `/api/products/search?name=laptop`
+
+**Response Example:**
+
+```json
+{
+  "count": 1,
+  "results": [
+    {
+      "id": "1",
+      "name": "Laptop",
+      "price": 1200,
+      "category": "electronics"
+    }
+  ]
+}
+```
+
+---
+
+### **7️⃣ Product Statistics**
+
+**GET** `/api/products/stats`
+
+**Response Example:**
+
+```json
+{
+  "totalProducts": 10,
+  "countByCategory": {
+    "electronics": 6,
+    "fashion": 2,
+    "home": 2
+  }
+}
+```
+
+---
+
+## ⚠️ Error Responses
+
+| Status | Type            | Message Example                 |
+| ------ | --------------- | ------------------------------- |
+| 400    | ValidationError | "Name and price are required"   |
+| 401    | Unauthorized    | "Unauthorized: Invalid API Key" |
+| 404    | NotFoundError   | "Product not found"             |
+| 500    | ServerError     | "Something went wrong"          |
+
+---
+
+## 🧠 Author
+
+**Olana Kenea**
+📍 Istanbul, Turkiye
+💼 System Administrator | Backend Developer
+📧 [[olanakenea6@gmail.com](mailto:olanakenea6@gmail.com)]
+🌐 [LinkedIn](https://linkedin.com/in/olana-kenea)
+
+---
+
+## 🪪 License
+
+This project is licensed under the MIT License.
+
+````
+
+---
+
+## ⚙️ **2. `.env.example`**
+
+```bash
+# Example environment variables for Express.js Product API
+
+# Port number for your server
+PORT=5000
+
+# Secret API key for authentication
+API_KEY=my-secret-key
+````
