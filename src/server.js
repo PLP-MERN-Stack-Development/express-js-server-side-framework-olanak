@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 
 // Handle undefined routes (Express 5 safe)
 app.all(/.*/, (req, res, next) => {
-  const { NotFoundError } = require('./utils/errors');
+  const { NotFoundError } = require('./utils/error.js');
   next(new NotFoundError(`Cannot find ${req.originalUrl} on this server`));
 });
 
